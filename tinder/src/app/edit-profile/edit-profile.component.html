@@ -1,0 +1,136 @@
+<form>
+  <div class="form-group row">
+    <label for="inputName" class="col-sm-2 col-form-label">Imie</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="inputName">
+    </div>
+    <div class="col-sm-6">
+      <p-fileUpload id="inputAvatar" mode="advanced" chooseLabel="Zmień avatar" name="demo[]" accept="image/*" maxFileSize="1000000" customUpload="true" (uploadHandler)="changeAvatar($event)"></p-fileUpload>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="inputSurname" class="col-sm-2 col-form-label">Nazwisko</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="inputSurname">
+    </div>
+    <div class="col-sm-6">
+      <p-fileUpload id="inputPhoto" mode="basic" chooseLabel="Dodaj zdjęcie" name="demo[]" accept="image/*" maxFileSize="1000000" customUpload="true" (onUpload)="addPhoto($event)"></p-fileUpload>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="inputPhone" class="col-sm-2 col-form-label">Telefon</label>
+    <div class="col-sm-4">
+      <input type="phone" class="form-control" id="inputPhone">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="inputBirthday" class="col-sm-2 col-form-label">Data urodzenia</label>
+    <div class="col-sm-4">
+      <p-calendar id="inputBirthday" name="dsada" [(ngModel)]="date3" [showIcon]="true"></p-calendar>
+    </div>
+  </div>
+
+  <fieldset class="form-group">
+    <div class="row">
+      <legend class="col-form-label col-sm-2 pt-0">Płeć</legend>
+      <div class="col-sm-4">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="gridRadios" id="radioMen" value="option1" checked>
+          <label class="form-check-label" for="radioMen">
+            Mężczyzna
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="gridRadios" id="radioFemale" value="option2">
+          <label class="form-check-label" for="radioFemale">
+            Kobieta
+          </label>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset class="form-group">
+    <div class="row">
+      <legend class="col-form-label col-sm-2 pt-0">Szukam</legend>
+      <div class="col-sm-4">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="aa" id="radioLookingMen" value="option1"
+                 checked>
+          <label class="form-check-label" for="radioLookingMen">
+            Mężczyzna
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="aa" id="radioLookingFemale" value="option2">
+          <label class="form-check-label" for="radioLookingFemale">
+            Kobieta
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="aa" id="radioLookingBoth" value="option2">
+          <label class="form-check-label" for="radioLookingBoth">
+            Wszystko jedno
+          </label>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <div class="form-group row">
+    <label for="inputDescription" class="col-sm-2 col-form-label">Opis</label>
+    <div class="col-sm-4">
+      <textarea class="form-control" id="inputDescription" rows="5"></textarea></div>
+  </div>
+
+  <div class="form-group row">
+    <div id="interestAccordion" class="col-sm-6">
+      <div class="card">
+        <div class="card-header" id="headingOne">
+          <h5 class="mb-0">
+            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Zainteresowania
+            </button>
+          </h5>
+        </div>
+        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#interestAccordion">
+          <div class="card-body">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="form-group row">
+    <div id="photoAccordion" class="col-sm-6">
+      <div class="card">
+        <div class="card-header" id="photoHeading">
+          <h5>
+            <button class="btn btn-link" data-toggle="collapse" data-target="#photoCollapse" aria-expanded="true" aria-controls="photoCollapse">
+              Zarządzaj zdjęciami
+            </button>
+          </h5>
+        </div>
+        <div id="photoCollapse" class="collapse" aria-labelledby="photoHeading" data-parent="#photoAccordion">
+          <div class="card-body">
+            <div class="container">
+              <div *ngFor="let image of images, index as i">
+                <div class="row text-center" style="margin: 10px">
+                  <img [src]="getPhoto(i)" width="150" height="150">
+                  <button (click)="deletePhoto(1)" class="btn" style="color: red"><span class="material-icons">delete_forever</span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-sm-2 ">
+      <button class="btn btn-primary" type="submit" (click)="login()">Zapisz</button>
+    </div>
+  </div>
+</form>

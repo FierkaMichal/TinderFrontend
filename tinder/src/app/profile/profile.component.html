@@ -1,0 +1,84 @@
+<div class="container align-content-center text-center col-md-6">
+  <div class="card text-center">
+    <div class="card-header">
+      <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="isProfileActive" (click)="onClickProfile()">Profil
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="isPicturesActive" (click)="onClickPictures()">Zdjęcia</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="isEditorActive" (click)="onClickEditor()">Edycja
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="card-body">
+
+      <!--PROFILE-->
+      <div *ngIf="isProfileActive">
+        <div class="container">
+          <img [src]="images[0]" class="img-circle" alt="Cinque Terre" width="600" height="800"
+               class="img-thumbnail mx-auto rounded d-block">
+        </div>
+        <h1><p>{{user.name}}&nbsp;{{user.surname}},&nbsp;{{getAge()}}&nbsp;&nbsp;<span *ngIf="user.sex === 'M'"
+                                                                                       class="fa fa-mars"></span><span
+          *ngIf="user.sex === 'F'" class="fa fa-venus"></span></p></h1>
+        <h2><p>{{user.description}}</p></h2>
+
+        <div class="container">
+          <div id="accordion">
+            <div class="card">
+              <div class="card-header">
+                <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                  Zainteresowania
+                </a>
+              </div>
+              <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                <div class="card-body">
+                  <div class="container">
+                    <div class="row">
+                      <div *ngFor="let interest of user.interests" class="col-sm">
+                        {{interest.name}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--PICTURES-->
+    <div *ngIf="isPicturesActive">
+      <div id="carousel" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+          <li data-target="#carousel" *ngFor="let image of images; index as i" [attr.data-slide-to]="i"
+              [ngClass]="i == 0 ? 'active' : ''"></li>
+        </ol>
+        <div class="carousel-inner">
+          <div *ngFor="let image of images; index as i" [ngClass]="i == 0 ? 'carousel-item active' : 'carousel-item'">
+            <img class="d-block w-100" [src]="image" alt="First slide">
+          </div>
+        </div>
+        <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+    </div>
+
+    <!--EDIT PROFILE-->
+    <div *ngIf="isEditorActive">
+      <app-edit-profile></app-edit-profile>
+    </div>
+  </div>
+</div>

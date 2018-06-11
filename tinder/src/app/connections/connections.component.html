@@ -1,0 +1,29 @@
+<div class="container align-content-center text-center">
+  <div class="card text-center">
+    <div class="card-header">
+      <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="connectedActive" (click)="onClickConnected()">Połączenia</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="likedActive" (click)="onClickLiked()">Polubieni</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="receivedActive" (click)="onClickReceived()">Otrzymane polubienia</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card text-center">
+      <ul class="list-group">
+        <li *ngFor="let user of userArray" class="list-group-item d-flex justify-content-between align-items-center">
+          <div class="container">
+            <a class="float-left"> {{user.name}}&nbsp;{{user.surname}}
+              <span class="material-icons float-right">person</span>
+            </a><span class="material-icons float-right">chat_bubble_outline</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

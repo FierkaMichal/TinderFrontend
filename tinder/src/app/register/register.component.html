@@ -1,0 +1,17 @@
+<div class="container align-content-center text-center col-md-6">
+  <div class="card text-center">
+    <form>
+      <div class="form-group">
+        <label for="inputLogin">Login</label>
+        <input [(ngModel)]="login" type="text" name="login" class="form-control" id="inputLogin" aria-describedby="emailHelp"
+               placeholder="Login">
+        <small id="emailHelp" class="form-text text-muted">Minimum 5 znaków</small>
+      </div>
+      <div class="form-group">
+        <label for="inputPassword">Hasło</label>
+        <input [(ngModel)]="password" type="password" name="password" class="form-control" id="inputPassword" placeholder="Hasło">
+      </div>
+      <button type="submit" class="btn btn-primary" (click)="onRegisterClick()">Załóż konto</button>
+    </form>
+  </div>
+</div>
