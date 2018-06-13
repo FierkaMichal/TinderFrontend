@@ -1,23 +1,28 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {RestService} from "./rest.service";
 import {HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs/internal/Observable";
+import {Response} from "./model/response";
+import {Match} from "./model/match";
+import {CookieService} from "ngx-cookie-service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
 
-  constructor(private restService: RestService) { }
-
-  checkIfLoginExist(login) {
-    let params = new HttpParams();
-    params = params.set("login", login);
-    return this.restService.doGet("/rest/checkIfLoginExist", params);
+  constructor(private restService: RestService, private cookieService: CookieService) {
   }
 
-  logout() {
-    return this.restService.doPost("/rest/logout", {});
+  checkIfLoginExist(login) {
+    return this.restService.doGet("/rest/checkIfLoginExist?login=" + login);
+  }
+
+  logout(): Observable<Response> {
+    let token = this.cookieService.get("token");
+    return this.restService.http.post<Response>(this.restService.host + "/rest/match/getMatchesGiven", {
+      headers: this.restService.getHeader(token)
+    });
   }
 
   register(login, password) {
@@ -28,12 +33,8 @@ export class AccountService {
     return this.restService.doPost("/rest/register", params);
   }
 
-  loginFunction(login, password): Observable<Object> {
-    let params = new HttpParams();
-    params = params.set("username", login);
-    params = params.set("password", password);
-    params = params.set("grant_type", 'password');
-    // const params = JSON.stringify({grant_type: password, username: login, password: password});
-    return this.restService.doLoginPost("/oauth/token", params);
+  loginFunction(login, password): Observable<Response> {
+    const params = JSON.stringify({login: login, password: password});
+    return this.restService.doLoginPost("/rest/login", params);
   }
 }

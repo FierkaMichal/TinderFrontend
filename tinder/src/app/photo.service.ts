@@ -1,32 +1,39 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpParams} from "@angular/common/http";
 import {RestService} from "./rest.service";
+import {User} from "./model/user";
+import {CookieService} from "ngx-cookie-service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PhotoService {
 
-  constructor(private restService: RestService) { }
+  constructor(private restService: RestService, private cookieService: CookieService) {
+  }
 
   getPhoto(idPhoto) {
     return this.restService.host + "/rest/photo/getPhoto?idPhoto=" + idPhoto;
   }
 
   addPhoto(photo) {
-    let params = new HttpParams();
-    params = params.set("photo", photo);
-    return this.restService.doPost("/rest/photo/addPhoto", params);
+    let token = this.cookieService.get("token");
+    return this.restService.http.post<string>(this.restService.host + "/rest/photo/addPhoto", {photo}, {
+      headers: this.restService.getHeader(token)
+    });
   }
 
   changeAvatar(photo) {
-    let params = new HttpParams();
-    params = params.set("avatar", photo);
-    return this.restService.doPost("/rest/photo/changeAvatar", params);
+    let token = this.cookieService.get("token");
+    return this.restService.http.post<string>(this.restService.host + "/rest/photo/changeAvatar", {photo}, {
+      headers: this.restService.getHeader(token)
+    });
   }
 
   deletePhoto(idPhoto) {
-    const params = JSON.stringify({id: idPhoto});
-    return this.restService.doPost("/rest/photo/deletePhoto", params);
+    let token = this.cookieService.get("token");
+    return this.restService.http.post<string>(this.restService.host + "/rest/photo/deletePhoto", {id: idPhoto}, {
+      headers: this.restService.getHeader(token)
+    });
   }
 }

@@ -1,48 +1,66 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {RestService} from "./rest.service";
 import {HttpParams} from "@angular/common/http";
+import {CookieService} from "ngx-cookie-service";
+import {Match} from "./model/match";
+import {Observable} from "rxjs/internal/Observable";
+import {Response} from "./model/response";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MatchService {
 
-  constructor(private restService: RestService) { }
-
-  giveLike(idUserTo) {
-    let params = new HttpParams();
-    params = params.set("idUserTo", idUserTo);
-    return this.restService.doPost("/rest/match/giveLike", params);
+  constructor(private restService: RestService, private cookieService: CookieService) {
   }
 
-  giveFavourite(idMatch) {
-    let params = new HttpParams();
-    params = params.set("idMatch", idMatch);
-    return this.restService.doPost("/rest/match/giveFavourite", params);
+  giveLike(idUserTo): Observable<Match> {
+    let token = this.cookieService.get("token");
+    return this.restService.http.post<Match>(this.restService.host + "/rest/match/giveLike?idUserTo=" + idUserTo, {
+      headers: this.restService.getHeader(token)
+    });
   }
 
-  getAllMatches() {
-    return this.restService.doGet("rest/match/getAllMatches", {});
+  giveFavourite(idMatch): Observable<Match> {
+    let token = this.cookieService.get("token");
+    return this.restService.http.post<Match>(this.restService.host + "/rest/match/giveFavourite?idMatch=" + idMatch, {
+      headers: this.restService.getHeader(token)
+    });
   }
 
-  getMatchesGiven() {
-    return this.restService.doGet("rest/match/getMatchesGiven", {});
+  getAllMatches(): Observable<Match[]> {
+    let token = this.cookieService.get("token");
+    return this.restService.http.get<Match[]>(this.restService.host + "/rest/match/getAllMatches", {
+      headers: this.restService.getHeader(token)
+    });
   }
 
-  getMatchesReceived() {
-    return this.restService.doGet("rest/match/getMatchesReceived", {});
+  getMatchesGiven(): Observable<Match[]> {
+    let token = this.cookieService.get("token");
+    return this.restService.http.get<Match[]>(this.restService.host + "/rest/match/getMatchesGiven", {
+      headers: this.restService.getHeader(token)
+    });
   }
 
-  deleteMatch(idMatch) {
-    let params = new HttpParams();
-    params = params.set("idMatch", idMatch);
-    return this.restService.doPost("rest/match/deleteMatch", params);
+
+  getMatchesReceived(): Observable<Match[]> {
+    let token = this.cookieService.get("token");
+    return this.restService.http.get<Match[]>(this.restService.host + "/rest/match/getMatchesReceived", {
+      headers: this.restService.getHeader(token)
+    });
   }
 
-  getNext(idCurrent, searchDistance) {
-    let params = new HttpParams();
-    params = params.set("idCurrent", idCurrent);
-    params = params.set("searchDistance", searchDistance);
-    return this.restService.doGet("rest/match/getMatchesReceived", params);
+  deleteMatch(idMatch): Observable<Response> {
+    let token = this.cookieService.get("token");
+    return this.restService.http.post<Response>(this.restService.host + "/rest/match/deleteMatch?idMatch=" + idMatch, {
+      headers: this.restService.getHeader(token)
+    });
+  }
+
+  getNext(idCurrent, searchDistance): Observable<Match> {
+    let token = this.cookieService.get("token");
+    return this.restService.http.get<Match>(this.restService.host + "/rest/match/getNext?idCurrent=" + idCurrent + "&searchDistance=" + searchDistance, {
+      headers: this.restService.getHeader(token)
+    });
   }
 }

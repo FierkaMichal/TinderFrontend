@@ -10,6 +10,9 @@
         <label for="inputPassword">Hasło</label>
         <input [(ngModel)]="password" type="password" name="password" class="form-control" id="inputPassword" placeholder="Hasło">
       </div>
+      <div *ngIf="wrongCredentials" class="alert alert-danger" role="alert">
+        Błędna nazwa użytkownika lub hasło!
+      </div>
       <button type="submit" class="btn btn-primary" (click)="onLoginClick()">Zaloguj sie</button>
     </form>
   </div>

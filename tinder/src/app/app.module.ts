@@ -20,9 +20,8 @@ import {RestService} from "./rest.service";
 import { CookieService } from 'ngx-cookie-service';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
-
-
-
+import {AccountService} from "./account.service";
+import { ChatComponent } from './chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +32,8 @@ import { LoginComponent } from './login/login.component';
     ConnectionsComponent,
     EditProfileComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +45,7 @@ import { LoginComponent } from './login/login.component';
     FileUploadModule,
     NgbModule.forRoot()
   ],
-  providers: [PhotoService, UserService, RestService, CookieService],
+  providers: [PhotoService, UserService, RestService, CookieService, AccountService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

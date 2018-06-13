@@ -3,9 +3,10 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {HttpClient} from "@angular/common/http";
 import {map} from "rxjs/operators";
 import {User} from "../model/user";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {CalendarModule} from 'primeng/calendar';
 import {PhotoService} from "../photo.service";
+import {UserService} from "../user.service";
 
 
 @Component({
@@ -19,12 +20,14 @@ export class ProfileComponent implements OnInit {
   public isPicturesActive = false;
   public isEditorActive = false;
 
+  public isLoggedUser = false;
+
   public user: User;
 
   public date3: Date;
   images: Array<string>;
 
-  constructor(private http: HttpClient, private photoService: PhotoService) {
+  constructor(private http: HttpClient, private userService: UserService, private activatedRoute: ActivatedRoute) {
     this.user = new User();
     this.user.name = "Paweł";
     this.user.surname = "Pizda";
@@ -44,17 +47,30 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.http.get('https://picsum.photos/list')
-      .pipe(map((images: Array<{ id: number }>) => this._randomImageUrls(images)))
-      .subscribe(images => this.images = images);
+    // this.http.get('https://picsum.photos/list')
+    //   .pipe(map((images: Array<{ id: number }>) => this._randomImageUrls(images)))
+    //   .subscribe(images => this.images = images);
+    if(this.activatedRoute.snapshot.paramMap.get('id') != null) {
+      let id = parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
+      this.isLoggedUser = false;
+    } else {
+      this.getLoggedUser();
+      this.isLoggedUser = true;
+    }
   }
 
-  private _randomImageUrls(images: Array<{ id: number }>): Array<string> {
-    return [1, 2, 3].map(() => {
-      const randomId = images[Math.floor(Math.random() * images.length)].id;
-      return `https://picsum.photos/900/500?image=${randomId}`;
-    });
+  getLoggedUser() {
+    this.userService.getCurrentUser().subscribe(res => {
+      console.log(res);
+    })
   }
+
+  // private _randomImageUrls(images: Array<{ id: number }>): Array<string> {
+  //   return [1, 2, 3].map(() => {
+  //     const randomId = images[Math.floor(Math.random() * images.length)].id;
+  //     return `https://picsum.photos/900/500?image=${randomId}`;
+  //   });
+  // }
 
   onClickProfile() {
     this.isProfileActive = true;

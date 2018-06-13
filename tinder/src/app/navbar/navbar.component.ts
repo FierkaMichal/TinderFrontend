@@ -38,9 +38,6 @@ export class NavbarComponent implements OnInit {
   }
 
   redirectTo(path) {
-    if(path == '/login') {
-      this.cookieService.set('token', "dssad");
-    }
     if(path == '/logout') {
       this.cookieService.delete('token');
     }

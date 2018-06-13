@@ -11,6 +11,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'profile', component: ProfileComponent},
+  {path: 'profile/:id', component: ProfileComponent},
   {path: 'matcher', component: SearchComponent},
   {path: 'connections', component: ConnectionsComponent}
 ];

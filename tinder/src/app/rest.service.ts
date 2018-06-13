@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs/internal/Observable";
+import {CookieService} from "ngx-cookie-service";
+import {Response} from "./model/response";
 
 @Injectable({
   providedIn: 'root'
@@ -9,33 +11,30 @@ export class RestService {
 
   public host = "http://localhost:8081";
 
-  constructor(public http: HttpClient) { }
-
-  // doPostNoParams(path): Observable<string> {
-  //   return this.http.post<string>(this.host + path, {});
-  // }
+  constructor(public http: HttpClient, private cookies: CookieService) {
+  }
 
   doPost(path, params) {
     let headers = new HttpHeaders();
     headers = headers.append("Content-Type", "application/json");
     return this.http.post(this.host + path, params, {headers: headers});
   }
-
-  // doGetNoParams(path): Observable<string> {
-  //   return this.http.get<string>(this.host + path, {});
-  // }
-
-  doGet(path, params) {
-    return this.http.get(this.host + path, params);
+  doGet(path) {
+    let headers = new HttpHeaders();
+    headers = headers.append("Authorization", "Bearer " + this.cookies.get('token'));
+    return this.http.get(this.host + path, {headers: headers});
   }
 
-  doLoginPost(path, params) {
+  doLoginPost(path, params): Observable<Response> {
     let headers = new HttpHeaders();
-    headers = headers.append("Authorization", "Basic " + btoa("my-trusted-client:secret"));
-    //headers = headers.append("Content-Type", "application/x-www-form-urlencoded");
-    headers = headers.append("Access-Control-Allow-Origin", "*");
-    console.log(headers);
-    console.log(params);
-    return this.http.post(this.host + path, params, {headers: headers});
+    headers = headers.append("Content-Type", "application/json");
+    return this.http.post<Response>(this.host + path, params,{headers: headers});
+  }
+
+  getHeader(token): HttpHeaders {
+    let headers = new HttpHeaders();
+    headers = headers.append("Content-Type", "application/json");
+    headers = headers.append("access_token", token);
+    return headers;
   }
 }

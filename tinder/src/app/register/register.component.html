@@ -11,7 +11,10 @@
         <label for="inputPassword">Hasło</label>
         <input [(ngModel)]="password" type="password" name="password" class="form-control" id="inputPassword" placeholder="Hasło">
       </div>
-      <button type="submit" class="btn btn-primary" (click)="onRegisterClick()">Załóż konto</button>
+      <div *ngIf="loginExist" class="alert alert-danger" role="alert">
+        Podana nazwa użytkowinka już istnieje!
+      </div>
+      <button [disabled]="login.length < 5" type="submit" class="btn btn-primary" (click)="onRegisterClick()">Załóż konto</button>
     </form>
   </div>
 </div>
