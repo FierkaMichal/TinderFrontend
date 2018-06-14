@@ -1,6 +1,6 @@
 export class User {
   idUser: number;
-  photos: Array<number>;
+  photos: Array<string>;
   avatar: string;
   name: string;
   surname: string;
@@ -11,4 +11,8 @@ export class User {
   sex: string;
   lookingFor: string;
   interests: Array<Object>;
+
+  public toJson(): string {
+    return JSON.stringify(this);
+  }
 }

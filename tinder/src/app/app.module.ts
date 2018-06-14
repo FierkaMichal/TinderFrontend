@@ -22,6 +22,7 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import {AccountService} from "./account.service";
 import { ChatComponent } from './chat/chat.component';
+import {GrowlModule} from "primeng/growl";
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { ChatComponent } from './chat/chat.component';
     BrowserAnimationsModule,
     CalendarModule,
     FileUploadModule,
+    GrowlModule,
     NgbModule.forRoot()
   ],
   providers: [PhotoService, UserService, RestService, CookieService, AccountService],

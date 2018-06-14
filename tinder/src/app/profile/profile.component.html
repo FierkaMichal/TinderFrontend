@@ -1,4 +1,4 @@
-<div class="container align-content-center text-center col-md-6">
+<div *ngIf="user != undefined" class="container align-content-center text-center col-md-6">
   <div class="card text-center">
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs">
@@ -20,8 +20,8 @@
       <!--PROFILE-->
       <div *ngIf="isProfileActive">
         <div class="container">
-          <!--<img [src]="images[0]" class="img-circle" alt="Cinque Terre" width="600" height="800"-->
-               <!--class="img-thumbnail mx-auto rounded d-block">-->
+          <img [src]="getPhoto(user.avatar)" class="img-circle" alt="" width="600" height="800"
+               class="img-thumbnail mx-auto rounded d-block">
         </div>
         <h1><p>{{user.name}}&nbsp;{{user.surname}},&nbsp;{{getAge()}}&nbsp;&nbsp;<span *ngIf="user.sex === 'M'"
                                                                                        class="fa fa-mars"></span><span
@@ -61,8 +61,8 @@
               [ngClass]="i == 0 ? 'active' : ''"></li>
         </ol>
         <div class="carousel-inner">
-          <div *ngFor="let image of images; index as i" [ngClass]="i == 0 ? 'carousel-item active' : 'carousel-item'">
-            <img class="d-block w-100" [src]="image" alt="First slide">
+          <div *ngFor="let image of user.photos; index as i" [ngClass]="i == 0 ? 'carousel-item active' : 'carousel-item'">
+            <img class="d-block w-100" [src]="getPhoto(image)" alt="First slide">
           </div>
         </div>
         <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">

@@ -11,7 +11,13 @@ import {Response} from "./model/response";
 })
 export class UserService {
 
+  public currentUser: User;
+
   constructor(private restService: RestService, private cookieService: CookieService) { }
+
+  getCurrentUserObject(): User {
+    return this.currentUser;
+  }
 
   getCurrentUser(): Observable<User> {
     let token = this.cookieService.get("token");
@@ -29,7 +35,8 @@ export class UserService {
 
   updateUser(user: User): Observable<User> {
     let token = this.cookieService.get("token");
-    return this.restService.http.post<User>(this.restService.host+"/rest/user/updateUser", {user}, {
+    // let params = user.toJson();
+    return this.restService.http.post<User>(this.restService.host+"/rest/user/updateUser", JSON.stringify(user), {
       headers: this.restService.getHeader(token)
     });
   }

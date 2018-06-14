@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {User} from "../model/user";
-import {map} from "rxjs/operators";
-import {HttpClient} from "@angular/common/http";
 import {PhotoService} from "../photo.service";
-import {AccountService} from "../account.service";
+import {UserService} from "../user.service";
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-edit-profile',
@@ -13,52 +12,39 @@ import {AccountService} from "../account.service";
 export class EditProfileComponent implements OnInit {
 
   public user: User;
+  public msgs;
   images: Array<string>;
 
-  constructor(private http: HttpClient, private photoService: PhotoService, private acc: AccountService) { this.user = new User();
-    this.user.name = "Paweł";
-    this.user.surname = "Pizda";
-    this.user.interests = [
-      {name: "aaa", id: 1},
-      {name: "aaa", id: 1},
-      {name: "aaa", id: 1},
-      {name: "aaa", id: 1},
-      {name: "aaa", id: 1},
-      {name: "aaa", id: 1}
-    ]
-    this.user.description = "dsasdasfsdffdsf" +
-      "ffsdfsfds" +
-      "fsasfds";
-    this.user.sex = 'F';
-    this.user.birthday = new Date(1990, 11, 24);}
+  constructor(private userService: UserService, private photoService: PhotoService) {
+
+  }
 
   ngOnInit() {
-    this.http.get('https://picsum.photos/list')
-      .pipe(map((images: Array<{ id: number }>) => this._randomImageUrls(images)))
-      .subscribe(images => this.images = images);
-  }
-  private _randomImageUrls(images: Array<{ id: number }>): Array<string> {
-    return [1, 2, 3].map(() => {
-      const randomId = images[Math.floor(Math.random() * images.length)].id;
-      return `https://picsum.photos/900/500?image=${randomId}`;
-    });
+    this.getLoggedUser();
   }
 
   changeAvatar(event) {
-    for(let file of event.files) {
-      this.photoService.changeAvatar(file.objectURL.changingThisBreaksApplicationSecurity).subscribe(res => {
-        console.log(res)
-      },
+    for (let file of event.files) {
+      console.log(file);
+      this.photoService.changeAvatar(file).subscribe(res => {
+          this.msgs = [];
+          this.msgs.push({severity: 'success', summary: 'Sukces', detail: 'Zmieniono avatar'});
+          console.log(res)
+        },
         err => {
-        console.log(err)
+          console.log(err)
         });
     }
+    document.getElementById("inputAvatar").setAttribute("files", null);
   }
 
   addPhoto(event) {
-    for(let file of event.files) {
+    for (let file of event.files) {
       this.photoService.addPhoto(file).subscribe(res => {
-          console.log(res)
+          this.user.photos.push(res);
+          this.msgs = [];
+          this.msgs.push({severity: 'success', summary: 'Sukces', detail: 'Dodano zdjęcie'});
+          console.log(res);
         },
         err => {
           console.log(err)
@@ -69,15 +55,8 @@ export class EditProfileComponent implements OnInit {
   deletePhoto(idPhoto) {
     this.photoService.deletePhoto(idPhoto).subscribe(res => {
         console.log(res)
-      },
-      err => {
-        console.log(err)
-      });
-  }
-
-  login() {
-    this.acc.loginFunction('123', 'aaa').subscribe(res => {
-        console.log(res)
+        let index = this.user.photos.indexOf(idPhoto);
+        this.user.photos.splice(index, 1);
       },
       err => {
         console.log(err)
@@ -86,5 +65,24 @@ export class EditProfileComponent implements OnInit {
 
   getPhoto(id) {
     return this.photoService.getPhoto(id);
+  }
+
+  getLoggedUser() {
+    this.userService.getCurrentUser().subscribe(res => {
+      this.user = res;
+      this.user.birthday = new Date(this.user.birthday);
+    });
+  }
+
+  saveChanges() {
+    this.userService.updateUser(this.user).subscribe(res => {
+      this.user = res;
+      this.user.birthday = new Date(this.user.birthday);
+      this.msgs = [];
+      this.msgs.push({severity: 'success', summary: 'Sukces', detail: 'Zaktualizowano dane'});
+    }, err => {
+      this.msgs = [];
+      this.msgs.push({severity: 'error', summary: 'Błąd', detail: 'Coś sie zepsuło'});
+    });
   }
 }

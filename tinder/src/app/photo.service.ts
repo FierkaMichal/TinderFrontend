@@ -18,15 +18,24 @@ export class PhotoService {
 
   addPhoto(photo) {
     let token = this.cookieService.get("token");
-    return this.restService.http.post<string>(this.restService.host + "/rest/photo/addPhoto", {photo}, {
-      headers: this.restService.getHeader(token)
+    let headers = this.restService.getHeader(token);
+    headers = headers.delete("Content-Type");
+    const formdata: FormData = new FormData();
+    formdata.append('file', photo);
+    return this.restService.http.post<string>(this.restService.host + "/rest/photo/addPhoto", formdata, {
+      headers: headers
     });
   }
 
-  changeAvatar(photo) {
+  changeAvatar(photo: File) {
     let token = this.cookieService.get("token");
-    return this.restService.http.post<string>(this.restService.host + "/rest/photo/changeAvatar", {photo}, {
-      headers: this.restService.getHeader(token)
+    let headers = this.restService.getHeader(token);
+    headers = headers.delete("Content-Type");
+    const formdata: FormData = new FormData();
+    formdata.append('file', photo);
+
+    return this.restService.http.post<string>(this.restService.host + "/rest/photo/changeAvatar", formdata, {
+      headers: headers
     });
   }
 

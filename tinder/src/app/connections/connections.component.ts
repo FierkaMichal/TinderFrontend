@@ -14,6 +14,8 @@ export class ConnectionsComponent implements OnInit {
 
   public userArray;
 
+
+
   constructor() {
     this.userArray = [{name: 'dsadas', surname: 'dada'},
       {name: 'dsadas', surname: 'dada'},

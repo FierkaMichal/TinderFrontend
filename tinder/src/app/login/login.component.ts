@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {AccountService} from "../account.service";
 import {Router} from "@angular/router";
 import {CookieService} from "ngx-cookie-service";
+import {User} from "../model/user";
+import {UserService} from "../user.service";
 
 @Component({
   selector: 'app-login',
@@ -14,7 +16,7 @@ export class LoginComponent implements OnInit {
   public password;
   public wrongCredentials;
 
-  constructor(private accountService: AccountService, private router: Router, private cookieService: CookieService) {
+  constructor(private accountService: AccountService, private userService: UserService, private router: Router, private cookieService: CookieService) {
   }
 
   ngOnInit() {
@@ -26,6 +28,7 @@ export class LoginComponent implements OnInit {
         console.log(res);
         if (res.response) {
           this.cookieService.set("token", res.response);
+          this.userService.getCurrentUser();
           this.router.navigate(["/profile"]);
         }
       },

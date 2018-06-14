@@ -4,6 +4,7 @@ import {PhotoService} from "../photo.service";
 import {CookieService} from "ngx-cookie-service";
 import {ObservableLike} from "rxjs/internal/types";
 import {Observable} from "rxjs/internal/Observable";
+import {AccountService} from "../account.service";
 
 @Component({
   selector: 'app-navbar',
@@ -16,7 +17,7 @@ export class NavbarComponent implements OnInit {
     {name: 'Profil', path: '/profile'},
     {name: 'Szukaj', path: '/matcher'},
     {name: 'Połączenia', path: '/connections'},
-    {name: 'Wyloguj', path: '/logout'}
+    {name: 'Wyloguj', path: '/login'}
 
   ];
 
@@ -27,7 +28,7 @@ export class NavbarComponent implements OnInit {
 
   public isUserLogged;
 
-  constructor(private router: Router,  private cookieService: CookieService ) { }
+  constructor(private router: Router, private cookieService: CookieService) { }
 
   ngOnInit() {
     this.isUserLogged = this.cookieService.check('token');
@@ -38,7 +39,7 @@ export class NavbarComponent implements OnInit {
   }
 
   redirectTo(path) {
-    if(path == '/logout') {
+    if(path == '/login') {
       this.cookieService.delete('token');
     }
     this.router.navigate(["" +  path]);
