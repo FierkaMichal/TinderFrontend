@@ -5,6 +5,7 @@ import {CookieService} from "ngx-cookie-service";
 import {Match} from "./model/match";
 import {Observable} from "rxjs/internal/Observable";
 import {Response} from "./model/response";
+import {User} from "./model/user";
 
 @Injectable({
   providedIn: 'root'
@@ -16,14 +17,14 @@ export class MatchService {
 
   giveLike(idUserTo): Observable<Match> {
     let token = this.cookieService.get("token");
-    return this.restService.http.post<Match>(this.restService.host + "/rest/match/giveLike?idUserTo=" + idUserTo, {
+    return this.restService.http.post<Match>(this.restService.host + "/rest/match/giveLike?idUserTo=" + idUserTo, {}, {
       headers: this.restService.getHeader(token)
     });
   }
 
   giveFavourite(idMatch): Observable<Match> {
     let token = this.cookieService.get("token");
-    return this.restService.http.post<Match>(this.restService.host + "/rest/match/giveFavourite?idMatch=" + idMatch, {
+    return this.restService.http.post<Match>(this.restService.host + "/rest/match/giveFavourite?idMatch=" + idMatch, {},{
       headers: this.restService.getHeader(token)
     });
   }
@@ -52,14 +53,14 @@ export class MatchService {
 
   deleteMatch(idMatch): Observable<Response> {
     let token = this.cookieService.get("token");
-    return this.restService.http.post<Response>(this.restService.host + "/rest/match/deleteMatch?idMatch=" + idMatch, {
+    return this.restService.http.post<Response>(this.restService.host + "/rest/match/deleteMatch?idMatch=" + idMatch, {},{
       headers: this.restService.getHeader(token)
     });
   }
 
-  getNext(idCurrent, searchDistance): Observable<Match> {
+  getNext(idCurrent, searchDistance): Observable<User> {
     let token = this.cookieService.get("token");
-    return this.restService.http.get<Match>(this.restService.host + "/rest/match/getNext?idCurrent=" + idCurrent + "&searchDistance=" + searchDistance, {
+    return this.restService.http.get<User>(this.restService.host + "/rest/match/getNext?idCurrent=" + idCurrent + "&searchDistance=" + searchDistance, {
       headers: this.restService.getHeader(token)
     });
   }

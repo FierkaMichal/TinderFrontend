@@ -13,6 +13,7 @@ export class EditProfileComponent implements OnInit {
 
   public user: User;
   public msgs;
+  public allInterest: {idInterest, name}[]
   images: Array<string>;
 
   constructor(private userService: UserService, private photoService: PhotoService) {
@@ -21,6 +22,7 @@ export class EditProfileComponent implements OnInit {
 
   ngOnInit() {
     this.getLoggedUser();
+    this.getAllInterest();
   }
 
   changeAvatar(event) {
@@ -72,6 +74,30 @@ export class EditProfileComponent implements OnInit {
       this.user = res;
       this.user.birthday = new Date(this.user.birthday);
     });
+  }
+
+  getAllInterest() {
+    this.userService.getAllInterest().subscribe(res =>{
+      this.allInterest = res;
+    });
+  }
+
+  userInterest(idInterest): boolean {
+    let inte = this.user.interests.find(a => a.idInterest == idInterest);
+    if(inte == undefined || inte == null)
+      return false;
+    return true;
+  }
+
+  interestCheck(interest: {idInterest, name}) {
+    let inte = this.user.interests.find(a => a.idInterest == interest.idInterest);
+    if(inte == undefined || inte == null) {
+      this.user.interests.push(interest);
+    }
+    else {
+      let index = this.user.interests.indexOf(inte);
+      this.user.interests.splice(index, 1);
+    }
   }
 
   saveChanges() {

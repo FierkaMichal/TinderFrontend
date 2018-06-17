@@ -1,4 +1,4 @@
-import {Component, OnInit, DoCheck} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {User} from "../model/user";
 import {ActivatedRoute} from "@angular/router";
 import {UserService} from "../user.service";
@@ -38,6 +38,12 @@ export class ProfileComponent implements OnInit {
   getLoggedUser() {
     this.userService.getCurrentUser().subscribe(res => {
       this.user = res;
+      this.userService.getGeolocation().subscribe(res => {
+        this.userService.updateLocalization(res.location.lng, res.location.lat).subscribe(res => {
+          console.log(res);
+        });
+        console.log(res);
+      });
       console.log(this.user);
     });
   }

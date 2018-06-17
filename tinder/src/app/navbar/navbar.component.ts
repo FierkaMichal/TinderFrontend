@@ -17,6 +17,7 @@ export class NavbarComponent implements OnInit {
     {name: 'Profil', path: '/profile'},
     {name: 'Szukaj', path: '/matcher'},
     {name: 'Połączenia', path: '/connections'},
+    {name: 'Chat', path: '/chat'},
     {name: 'Wyloguj', path: '/login'}
 
   ];

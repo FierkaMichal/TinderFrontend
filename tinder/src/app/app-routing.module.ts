@@ -5,15 +5,20 @@ import {SearchComponent} from "./search/search.component";
 import {ConnectionsComponent} from "./connections/connections.component";
 import {RegisterComponent} from "./register/register.component";
 import {LoginComponent} from "./login/login.component";
+import {AdminPanelComponent} from "./admin-panel/admin-panel.component";
+import {ChatComponent} from "./chat/chat.component";
 
 const routes: Routes = [
-  {path: '', redirectTo: '/profile', pathMatch:'full'},
+  {path: '', redirectTo: '/login', pathMatch:'full'},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'profile', component: ProfileComponent},
   {path: 'profile/:id', component: ProfileComponent},
   {path: 'matcher', component: SearchComponent},
-  {path: 'connections', component: ConnectionsComponent}
+  {path: 'connections', component: ConnectionsComponent},
+  {path: 'adminPanel', component: AdminPanelComponent},
+  {path: 'chat', component: ChatComponent}
+
 ];
 
 @NgModule({
@@ -21,4 +26,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
-export const routingComponents = [ProfileComponent, SearchComponent, ConnectionsComponent, RegisterComponent, LoginComponent]
+export const routingComponents = [ProfileComponent, ChatComponent, SearchComponent, ConnectionsComponent, RegisterComponent, LoginComponent, AdminPanelComponent]

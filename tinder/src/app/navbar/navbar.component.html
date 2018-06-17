@@ -10,7 +10,7 @@
       <div *ngIf="isUserLogged; else elseNavButton">
         <ul class="navbar-nav">
           <li class="nav-item" *ngFor="let button of userLoggedNavButtons">
-            <a class="nav-link"  (click)="redirectTo(button.path)">{{button.name}}</a>
+            <a class="nav-link"  (click)="redirectTo(button.path)" style="cursor: pointer;">{{button.name}}</a>
           </li>
         </ul>
       </div>
@@ -23,7 +23,7 @@
 <ng-template #elseNavButton>
     <ul class="navbar-nav">
       <li class="nav-item" *ngFor="let button of userNotLoggedNavButtons">
-        <a class="nav-link" (click)="redirectTo(button.path)">{{button.name}}</a>
+        <a class="nav-link" (click)="redirectTo(button.path)" style="cursor: pointer;">{{button.name}}</a>
       </li>
     </ul>
 </ng-template>

@@ -3,14 +3,14 @@
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs">
         <li class="nav-item">
-          <a class="nav-link" [class.active]="isProfileActive" (click)="onClickProfile()">Profil
+          <a class="nav-link" [class.active]="isProfileActive" (click)="onClickProfile()" style="cursor: pointer;">Profil
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [class.active]="isPicturesActive" (click)="onClickPictures()">Zdjęcia</a>
+          <a class="nav-link" [class.active]="isPicturesActive" (click)="onClickPictures()" style="cursor: pointer;">Zdjęcia</a>
         </li>
         <li *ngIf="isLoggedUser" class="nav-item">
-          <a class="nav-link" [class.active]="isEditorActive" (click)="onClickEditor()">Edycja
+          <a class="nav-link" [class.active]="isEditorActive" (click)="onClickEditor()" style="cursor: pointer;">Edycja
           </a>
         </li>
       </ul>

@@ -1,101 +1,38 @@
-<div class="container">
-  <div class="row chat-window col-xs-5 col-md-3" id="chat_window_1" style="margin-left:10px;">
-    <div class="col-xs-12 col-md-12">
-      <div class="panel panel-default">
-        <div class="panel-heading top-bar">
-          <div class="col-md-8 col-xs-8">
-            <h3 class="panel-title"><span class="glyphicon glyphicon-comment"></span> Chat - Miguel</h3>
-          </div>
-        </div>
-        <div class="panel-body msg_container_base">
-          <div class="row msg_container base_sent">
-            <div class="col-md-10 col-xs-10">
-              <div class="messages msg_sent">
-                <p>that mongodb thing looks good, huh?
-                  tiny master db, and huge document store</p>
-                <time datetime="2009-11-13T20:00">Timothy • 51 min</time>
-              </div>
-            </div>
-            <div class="col-md-2 col-xs-2 avatar">
-              <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg"
-                   class=" img-responsive ">
+<p-growl [(value)]="msgs"></p-growl>
+
+<div id="frame" class="container text-center">
+  <div id="sidepanel">
+    <div id="contacts">
+      <ul>
+        <li *ngFor="let chat of chatList; let i = index" class="contact">
+          <div class="wrap" (click)="changeChat(chat.idMatch, i)">
+            <img [src]="getPhoto(chat.avatar)" alt="" />
+            <div class="meta">
+              <p class="name">{{chat.name}}&nbsp;{{chat.surname}}</p>
+              <!--<p class="preview">You just got LITT up, Mike.</p>-->
             </div>
           </div>
-          <div class="row msg_container base_receive">
-            <div class="col-md-2 col-xs-2 avatar">
-              <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg"
-                   class=" img-responsive ">
-            </div>
-            <div class="col-md-10 col-xs-10">
-              <div class="messages msg_receive">
-                <p>that mongodb thing looks good, huh?
-                  tiny master db, and huge document store</p>
-                <time datetime="2009-11-13T20:00">Timothy • 51 min</time>
-              </div>
-            </div>
-          </div>
-          <div class="row msg_container base_receive">
-            <div class="col-md-2 col-xs-2 avatar">
-              <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg"
-                   class=" img-responsive ">
-            </div>
-            <div class="col-xs-10 col-md-10">
-              <div class="messages msg_receive">
-                <p>that mongodb thing looks good, huh?
-                  tiny master db, and huge document store</p>
-                <time datetime="2009-11-13T20:00">Timothy • 51 min</time>
-              </div>
-            </div>
-          </div>
-          <div class="row msg_container base_sent">
-            <div class="col-xs-10 col-md-10">
-              <div class="messages msg_sent">
-                <p>that mongodb thing looks good, huh?
-                  tiny master db, and huge document store</p>
-                <time datetime="2009-11-13T20:00">Timothy • 51 min</time>
-              </div>
-            </div>
-            <div class="col-md-2 col-xs-2 avatar">
-              <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg"
-                   class=" img-responsive ">
-            </div>
-          </div>
-          <div class="row msg_container base_receive">
-            <div class="col-md-2 col-xs-2 avatar">
-              <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg"
-                   class=" img-responsive ">
-            </div>
-            <div class="col-xs-10 col-md-10">
-              <div class="messages msg_receive">
-                <p>that mongodb thing looks good, huh?
-                  tiny master db, and huge document store</p>
-                <time datetime="2009-11-13T20:00">Timothy • 51 min</time>
-              </div>
-            </div>
-          </div>
-          <div class="row msg_container base_sent">
-            <div class="col-md-10 col-xs-10 ">
-              <div class="messages msg_sent">
-                <p>that mongodb thing looks good, huh?
-                  tiny master db, and huge document store</p>
-                <time datetime="2009-11-13T20:00">Timothy • 51 min</time>
-              </div>
-            </div>
-            <div class="col-md-2 col-xs-2 avatar">
-              <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg"
-                   class=" img-responsive ">
-            </div>
-          </div>
-        </div>
-        <div class="panel-footer">
-          <div class="input-group">
-            <input [(ngModel)]="message" name="message" id="btn-input" type="text"
-                   class="form-control input-sm chat_input" placeholder="Napisz wiadomość"/>
-            <span class="input-group-btn">
-                        <button class="btn btn-primary btn-sm" id="btn-chat" (click)="onSendClick()">Send</button>
-                        </span>
-          </div>
-        </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="content">
+    <div class="contact-profile">
+      <img [src]="getPhoto(chatList[tabIndex].avatar)" alt="" style="cursor: pointer" (click)="goToProfile()" />
+      <p style="cursor: pointer" (click)="goToProfile()">{{chatList[tabIndex].name}}&nbsp;{{chatList[tabIndex].surname}}</p>
+    </div>
+    <div class="messages">
+      <ul>
+      <li *ngFor="let message of currentSeeMessage" [class.sent]="senderID!=message.idSender" [class.replies]="senderID==message.idSender">
+          <!--<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />-->
+          <p>{{message.message}}</p>
+        </li>
+      </ul>
+    </div>
+    <div class="message-input">
+      <div class="wrap">
+        <input type="text" placeholder="Napisz swoją wiadmomość..." name="inputMessage" [(ngModel)]="message"/>
+        <button class="submit" (click)="onSendClick()"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
       </div>
     </div>
   </div>

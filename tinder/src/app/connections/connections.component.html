@@ -1,29 +1,52 @@
-<div class="container align-content-center text-center">
+<div class="container align-content-center text-center col-md-6">
   <div class="card text-center">
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs">
         <li class="nav-item">
-          <a class="nav-link" [class.active]="connectedActive" (click)="onClickConnected()">Połączenia</a>
+          <a class="nav-link" [class.active]="connectedActive" (click)="onClickConnected()" style="cursor: pointer;">Połączenia</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [class.active]="likedActive" (click)="onClickLiked()">Polubieni</a>
+          <a class="nav-link" [class.active]="likedActive" (click)="onClickLiked()" style="cursor: pointer;">Polubieni</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [class.active]="receivedActive" (click)="onClickReceived()">Otrzymane polubienia</a>
+          <a class="nav-link" [class.active]="receivedActive" (click)="onClickReceived()" style="cursor: pointer;">Otrzymane polubienia</a>
         </li>
       </ul>
     </div>
 
-    <div class="card text-center">
+    <div *ngIf="matchList != undefined && matchList.length > 0; else noMatchElse" class="card text-center">
       <ul class="list-group">
-        <li *ngFor="let user of userArray" class="list-group-item d-flex justify-content-between align-items-center">
+        <li *ngFor="let match of matchList" class="list-group-item d-flex justify-content-between align-items-center">
           <div class="container">
-            <a class="float-left"> {{user.name}}&nbsp;{{user.surname}}
-              <span class="material-icons float-right">person</span>
-            </a><span class="material-icons float-right">chat_bubble_outline</span>
+            <a class="float-left" (click)="goToProfile(match.idUser)" style="cursor: pointer;">
+              <span class="material-icons float-left">person</span>{{match.name}}&nbsp;{{match.surname}}
+            </a>
+            <a class="float-right">
+              <span *ngIf="connectedActive" class="material-icons float-left;" style="margin-right: 1em; cursor: pointer;" (click)="goToChat(match.idMatch)">chat_bubble_outline</span>
+              <a *ngIf="match.isFavourite && connectedActive">
+                <span class="material-icons" style="color: yellow; margin-right: 1em; cursor: pointer;" (click)="giveFavourite(match.idMatch)">star</span>
+              </a>
+              <a *ngIf="!match.isFavourite && connectedActive">
+                <span class="material-icons" style="color: yellow; margin-right: 1em; cursor: pointer;" (click)="giveFavourite(match.idMatch)">star_border</span>
+              </a>
+              <a *ngIf="!receivedActive" class="float-right">
+                <span class="material-icons" style="cursor: pointer;" (click)="deleteMatch(match.idMatch)">clear</span>
+              </a>
+              <a *ngIf="receivedActive" class="float-left">
+                <span class="material-icons" style="cursor: pointer;" (click)="giveLike(match.idUser)">whatshot</span>
+              </a>
+            </a>
           </div>
         </li>
       </ul>
     </div>
   </div>
 </div>
+
+<ng-template #noMatchElse>
+  <div class="card text-center">
+    <div class="container">
+      <h4>Brak połączeń/polubień</h4>
+    </div>
+  </div>
+</ng-template>

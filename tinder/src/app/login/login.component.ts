@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {CookieService} from "ngx-cookie-service";
 import {User} from "../model/user";
 import {UserService} from "../user.service";
+import {Location} from "../model/location";
 
 @Component({
   selector: 'app-login',
@@ -25,10 +26,8 @@ export class LoginComponent implements OnInit {
 
   onLoginClick() {
     this.accountService.loginFunction(this.login, this.password).subscribe(res => {
-        console.log(res);
         if (res.response) {
           this.cookieService.set("token", res.response);
-          this.userService.getCurrentUser();
           this.router.navigate(["/profile"]);
         }
       },

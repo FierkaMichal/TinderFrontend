@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {User} from "../model/user";
 import {Router} from "@angular/router";
+import {MatchService} from "../match.service";
+import {UserService} from "../user.service";
 
 @Component({
   selector: 'app-search',
@@ -10,31 +12,50 @@ import {Router} from "@angular/router";
 export class SearchComponent implements OnInit {
 
   public searchDistance;
-  public user: User
+  public userActive;
+  public user: User;
+  public msgs;
 
-  constructor() {
-    this.searchDistance = 50;
-    this.user = new User();
-    this.user.name = "Michal";
-    this.user.surname = "gfh";
-    this.user.interests = [
-      {name: "aaa", id: 1},
-      {name: "aaa", id: 1},
-      {name: "aaa", id: 1},
-      {name: "aaa", id: 1},
-      {name: "aaa", id: 1},
-      {name: "aaa", id: 1}
-    ]
-    this.user.description = "dsasdasfsdffdsf" +
-      "ffsdfsfds" +
-      "fsasfds";
-    this.user.sex = 'F';
-    this.user.birthday = new Date();
-    this.user.avatar = "https://vignette.wikia.nocookie.net/kononowicz/images/3/3f/Konon.png/revision/latest?cb=20180429133048&path-prefix=pl";
+  constructor(private matchService: MatchService, private router: Router, private userService: UserService) {
+
   }
 
   ngOnInit() {
+    this.userActive = false;
+    if(this.user == undefined) {
+      this.searchDistance = 50;
+      this.getNextUser(0);
+    }
+    this.isUserActive();
   }
+
+  getNextUser(idUser) {
+    this.matchService.getNext(idUser, this.searchDistance).subscribe(res => {
+      this.user = res;
+      this.user.birthday = new Date(this.user.birthday);
+      console.log(res);
+    });
+  }
+
+  giveLike() {
+    this.matchService.giveLike(this.user.idUser).subscribe(res => {
+      this.msgs = [];
+      this.msgs.push({severity: 'success', summary: 'Sukces', detail: 'Polubiono ' + this.user.name});
+      this.getNextUser(this.user.idUser);
+    });
+  }
+
+  goToProfile() {
+    this.router.navigate(["/profile/" + this.user.idUser]);
+  }
+
+  isUserActive() {
+    this.userService.isUserActive().subscribe(res => {
+      this.userActive = res;
+      console.log(res);
+    });
+  }
+
 
   getAge(): number {
     var ageDifMs = Date.now() - this.user.birthday.getTime();

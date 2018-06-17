@@ -37,4 +37,5 @@ export class AccountService {
     const params = JSON.stringify({login: login, password: password});
     return this.restService.doLoginPost("/rest/login", params);
   }
+
 }

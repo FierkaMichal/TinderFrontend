@@ -10,7 +10,7 @@ export class User {
   isAdmin: boolean;
   sex: string;
   lookingFor: string;
-  interests: Array<Object>;
+  interests: Array<{idInterest, name}>;
 
   public toJson(): string {
     return JSON.stringify(this);

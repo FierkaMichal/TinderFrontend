@@ -23,6 +23,7 @@ import { LoginComponent } from './login/login.component';
 import {AccountService} from "./account.service";
 import { ChatComponent } from './chat/chat.component';
 import {GrowlModule} from "primeng/growl";
+import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import {GrowlModule} from "primeng/growl";
     EditProfileComponent,
     RegisterComponent,
     LoginComponent,
-    ChatComponent
+    ChatComponent,
+    AdminPanelComponent
   ],
   imports: [
     BrowserModule,

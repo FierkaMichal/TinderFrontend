@@ -103,6 +103,10 @@
         </div>
         <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#interestAccordion">
           <div class="card-body">
+            <div *ngFor="let interest of allInterest" class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" [id]="interest.idInterest" (click)="interestCheck(interest)" [checked]="userInterest(interest.idInterest)">
+              <label class="custom-control-label" [for]="interest.idInterest">{{interest.name}}</label>
+            </div>
           </div>
         </div>
       </div>
