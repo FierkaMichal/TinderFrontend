@@ -5,6 +5,7 @@ import {CookieService} from "ngx-cookie-service";
 import {ObservableLike} from "rxjs/internal/types";
 import {Observable} from "rxjs/internal/Observable";
 import {AccountService} from "../account.service";
+import {UserService} from "../user.service";
 
 @Component({
   selector: 'app-navbar',
@@ -29,10 +30,17 @@ export class NavbarComponent implements OnInit {
 
   public isUserLogged;
 
-  constructor(private router: Router, private cookieService: CookieService) { }
+  constructor(private router: Router, private cookieService: CookieService, private userService: UserService) { }
 
   ngOnInit() {
     this.isUserLogged = this.cookieService.check('token');
+    if(this.isUserLogged == true){
+      this.userService.getCurrentUser().subscribe(res => {
+        if(res.isAdmin == true) {
+          this.userLoggedNavButtons.splice(4, 0, {name: 'Panel administratora', path: '/adminPanel'});
+        }
+      })
+    }
   }
 
   ngDoCheck() {

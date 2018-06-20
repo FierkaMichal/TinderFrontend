@@ -73,4 +73,18 @@ export class UserService {
   getGeolocation(): Observable<Location> {
     return this.restService.http.post<Location>('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyCTymYxKGB4DeLuPJWDp8BpP8-iO2dhHsk', {});
   }
+
+  getAllUser(): Observable<User[]> {
+    let token = this.cookieService.get("token");
+    return this.restService.http.get<User[]>(this.restService.host + '/rest/user/getAll', {
+      headers: this.restService.getHeader(token)
+    });
+  }
+
+  deleteUser(params): Observable<Object>{
+    let token = this.cookieService.get("token");
+    return this.restService.http.post<Object>(this.restService.host + "/rest/user/deleteUser?idUser=" + params, {}, {
+      headers: this.restService.getHeader(token)
+    });
+  }
 }

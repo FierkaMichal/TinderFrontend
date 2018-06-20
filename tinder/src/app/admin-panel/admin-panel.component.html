@@ -1,3 +1,22 @@
-<p>
-  admin-panel works!
-</p>
+<div class="container align-content-center text-center col-md-6">
+  <div class="card text-center">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Imie</th>
+          <th scope="col">Nazwisko</th>
+          <th scope="col">Akcje</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users; let i = index">
+          <th scope="row">{{i + 1}}</th>
+          <td>{{user.name}}</td>
+          <td>{{user.surname}}</td>
+          <td><span class="material-icons" style="cursor: pointer; color: red" (click)="deleteUser(user.idUser)">clear</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
